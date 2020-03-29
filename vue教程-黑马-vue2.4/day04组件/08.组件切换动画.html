@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>08.组件切换动画</title>
+  <script src="./lib/vue.js"></script>
+  <style>
+    .v-enter,
+    .v-leave-to {
+      opacity: 0;
+      transform: translateX(150px);
+    }
+    .v-enter-active,
+    .v-leave-active{
+      transition: all 0.5s ease;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <a href="" @click.prevent="comName='login'">登录</a>
+    <a href="" @click.prevent="comName='register'">注册</a>
+    <!-- 通过mode设置组件切换的模式 out-in  in-out -->
+    <transition mode="out-in">
+      <component :is="comName"></component>
+    </transition>
+    <!-- 总结：当前学习了几个 Vue 标签:template  component transition transition-group -->
+  </div>
+
+  <template id=temp1>
+    <h3>这是第一个组件</h3>
+  </template>
+  <template id=temp2>
+    <h3>这是第二个组件</h3>
+  </template>
+  <script>
+    Vue.component('login', {
+      template: '#temp1'
+    })
+
+    Vue.component('register', {
+      template: '#temp2'
+    })
+
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        comName: 'login'
+      },
+      methods: {
+
+      },
+    })
+  </script>
+</body>
+
+</html>

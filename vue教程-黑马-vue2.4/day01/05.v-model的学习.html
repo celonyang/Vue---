@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>05.v-model的学习</title>
+</head>
+<body>
+  <!-- v-model是唯一一个实现双向绑定的指令 -->
+  <!-- v-bind只能实现数据的单向绑定，只能从模型M绑定到视图中V -->
+  <div id="app">
+    <input type="text" v-model="msg">
+    <h4>{{ msg }}</h4>
+  </div>
+  <script src="./lib/vue.js"></script>
+  <script>
+    var vm=new Vue({
+      el:"#app",
+      data:{
+        msg:"我们都是好学生。。。。"
+      },
+      methods: {
+        
+      },
+    })
+  </script>
+</body>
+</html>

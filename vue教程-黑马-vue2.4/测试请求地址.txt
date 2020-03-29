@@ -1,0 +1,29 @@
+var vm = new Vue({
+             el:'#app',
+             data:{},   
+             methods:{
+                 getInfo(){
+                    this.$http.get('http://jsonplaceholder.typicode.com/users').then(result=> {
+                        console.log(result.body);
+                    })  
+                 },
+                 //get请求，通过function执行的成功的回调函数，得到body和data等数据    
+ 
+                 postInfo(){
+                     this.$http.post('http://jsonplaceholder.typicode.com/users',{},{emulateJSON:true}).then(result=>{
+                         console.log(result.body);
+                     })
+                 },
+                 //post请求，中间花括号空的部分为提交给服务器的数据这里默认，emulateJSON:true,将手动提交表单格式设置为application/x-www-form-urlencoded格式
+ 
+                 jsonpInfo(){
+                     this.$http.jsonp('http://jsonplaceholder.typicode.com/users').then(result=>{
+                         console.log(result.body)
+                     })
+                 }
+             } 
+          });
+
+————————————————
+版权声明：本文为CSDN博主「Screw1024」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/qq_42036616/article/details/82829787

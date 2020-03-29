@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>09.父组件向子组件传值</title>
+  <script src="./lib/vue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <com1 :msg="msg" @func="show"></com1>
+  </div>
+  <script>
+
+    //父组件可以在引用子组件的时候通过属性绑定的形式，把父组件的data(v-bind :)和methods(v-on @)传递到子组件内部，供子组件使用
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        msg: '这是父组件'
+      },
+      methods: {
+        show(data) {
+          console.log('这是父组件的方法'+data.name+'--'+data.age)
+        }
+      },
+      components: {
+
+        // 子组件无法直接访问父组件上的data 和 methods 
+        com1: {
+          //子组件通过props:[]来接收父组件的data 或  methods
+          props: ['msg'],
+          template: "<div><h1>这是子组件,引用父组件的data--{{ msg }}</h1> <input type='button' value='调用父组件的方法' @click='myFunc'> </div>",
+          //data上的数据是子组件自己的数据，数据是可读可写的，props中的数据都是只读的
+          data: function () {
+            return {
+              title: '123',
+              context: '123',
+              somemsg:{name:'celon',age:31}
+            }
+
+          },
+          directives: {},
+          filters: {},
+          components: {},
+          methods: {
+            myFunc() {
+              this.$emit('func',this.somemsg)
+            }
+          }
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>

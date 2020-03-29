@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>01.品牌列表案例</title>
+  <link rel="stylesheet" href="./lib/bootstrap-3.3.7.css">
+</head>
+
+<body>
+  <div id="app">
+
+
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title">添加品牌</h3>
+      </div>
+      <div class="panel-body form-inline">
+        <label>
+          id: <input type="text" class="form-control" v-model="id">
+        </label>
+        <label>
+          name: <input type="text" class="form-control" v-model="name">
+        </label>
+        <!-- 在vue中，使用事件绑定机制，为元素加小括号,就可以给事件传参，无参时可以不加小括号() -->
+        <input type="button" value="添加" class="btn btn-primary" @click="Add">
+        <label>
+          搜索名字的关键字：
+          <input type="text" class="form-control" v-model="keywords">
+        </label>
+      </div>
+    </div>
+
+    <table class="table table-bordered table-hover table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Ctime</th>
+          <th>Operation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for='item in Search(keywords)' :key="item.id">
+          <td v-text="item.id"></td>
+          <td v-text="item.name"></td>
+          <td v-text="item.ctime"></td>
+          <td><a href="" @click.prevent="Delete(item.id)">删除</a></td>
+        </tr>
+      </tbody>
+    </table>
+
+
+  </div>
+  <script src="./lib/vue.js"></script>
+  <script>
+    var vm = new Vue({
+      el: "#app",
+      data: {
+        id: '',
+        name: '',
+        keywords: '',//搜索的关键字
+        list: [
+          { id: 1, name: '奔驰', ctime: new Date() },
+          { id: 2, name: '宝马', ctime: new Date() }
+        ]
+      },
+      methods: {
+        // 业务逻辑分析：
+        // 1、获取id，name，直接从data上面获取
+        // 2、组织一个对象
+        // 3、把这个对象，调用 数组的 相关方法，添加（push或unshift）到当前data 上的list中
+        // 4、注意 在vue中已经实现来数据的双向绑定，每当我们修改来data中的数据，vue会默认监听到数据的改动，
+        // 自动把最新的数据，应用到页面上
+        // 5、我们更多的是在进行 VM中的model 数据的操作，同事，在操作model数据的时候，指定业务逻辑的操作
+        Add() {
+          this.list.push({ id: this.id, name: this.name, ctime: new Date() })
+          this.id = this.name = ''
+        },
+        // 分析：
+        // 1、如何根据id找到删除这项的索引
+        // 2、直接调用数组的splice方法
+        Delete(id) {
+
+          // this.list.some((item,i) => {
+          //   if (item.id = id)
+          //     this.list.splice(i, 1)
+          //   return true;
+          // })
+
+          var index = this.list.findIndex(item => {
+            if (item.id == id)
+              return true
+          })
+          console.log(index)
+          this.list.splice(index, 1)
+
+        },
+        // 之前v-for中的数据都是从list中的数据直接渲染过来的
+        // 现在，自定义一个方法 Search 方法，同事，把 所有的关键字，通过传参的形式传递给Search方法
+        // 把符合条件的数据组成一个新数组，返回
+        Search(keywords) {
+          var newList = []
+          // this.list.forEach(item => {
+          //   if (item.name.indexOf(keywords) != -1) {
+          //     newList.push(item)
+          //   }
+          // })
+          // return newList
+
+          return this.list.filter(item=>{
+            // ES6中提供的新方法，字符串内包含某些字符
+            if (item.name.includes(keywords)) {
+              return item
+            }
+          })
+          
+        }
+      },
+    })
+  </script>
+</body>
+
+</html>

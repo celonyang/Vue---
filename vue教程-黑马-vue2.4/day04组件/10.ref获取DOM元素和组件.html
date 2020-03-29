@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>10.ref获取DOM元素和组件</title>
+  <script src="./lib/vue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <input type="button" value="获取元素" @click="getElement" ref="myRefBtn">
+    <h3 ref="myRefH3">被vue获取的h3标签元素内容</h3>
+    <login ref="RefLogin"></login>
+  </div>
+
+  <script>
+    var login={
+      template:'<h3>登录组件</h3>',
+      data:function(){
+        return {
+          msg:'子组件'
+        }
+      }
+    }
+    var vm=new Vue({
+      el:'#app',
+      data:{
+
+      },
+      methods:{
+        getElement(){
+          console.log(this.$refs.myRefH3.innerText)
+          console.log(this.$refs.myRefBtn.value)
+          console.log(this.$refs.RefLogin.msg)
+
+        }
+      },
+      components:{
+        login
+      }
+    })
+  </script>
+</body>
+
+</html>

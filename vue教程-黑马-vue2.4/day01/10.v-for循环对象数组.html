@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>v-for循环对象数组</title>
+</head>
+
+<body>
+  <div id="app">
+    <p v-for="(value,key,index) in user">{{ key }} :{{ value }}:{{ index }}</p>
+  </div>
+  <script src="./lib/vue.js"></script>
+  <script>
+    var vm = new Vue({
+      el: '#app',
+      data: {
+          user: {
+            id: 1,
+            name: 'Celon1',
+            gender: 'male'
+          }
+      },
+      methods: {
+
+      },
+    })
+  </script>
+</body>
+
+</html>

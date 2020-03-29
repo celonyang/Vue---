@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>13.v-for循环中key的使用</title>
+</head>
+
+<body>
+  <div id="app">
+    <div>
+      ID:<input type="text" v-model="id">
+      Name:<input type="text" v-model="name">
+      <input type="button" value="添加" @click="add">
+    </div>
+    <!-- v-for循环的时候，key只能使用string或number -->
+    <!-- key在使用的时候，必须使用v-bind属性绑定的形式，指定key的值 -->
+    <!-- 在组件中，使用v-for循环的时候，或在一些特殊情况中，
+    如果v-for有问题，必须使用v-for的时候，指定唯一的数字/字符串类型的key值 -->
+    <div v-for="item in list"  :key="item.id">
+      <div>
+        <input type="checkbox"> {{ item.id }}-{{ item.name }}
+      </div>
+    </div>
+  </div>
+  <script src="./lib/vue.js"></script>
+  <script>
+    var vm = new Vue({
+      el: "#app",
+      data: {
+        id: null,
+        name: null,
+        list: [
+          { id: 1, name: "celon" },
+          { id: 2, name: "celon1" },
+          { id: 3, name: "celon2" },
+          { id: 5, name: "celon3" }
+        ]
+      },
+      methods: {
+        add() {
+          // this.list.push({ id: this.id, name: this.name }) //追加push
+          this.list.unshift({ id: this.id, name: this.name }) //第一行插入unshift
+        }
+      },
+    })
+  </script>
+</body>
+
+</html>

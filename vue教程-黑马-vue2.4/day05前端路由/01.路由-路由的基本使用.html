@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>01.路由-路由的基本使用</title>
+  <script src="./lib/vue.js"></script>
+  <script src="./lib/vue-router.js"></script>
+  <link rel="stylesheet" href="./lib/animate.min.css">
+  <style>
+    .router-link-active {
+      color: red;
+      font-weight: 800;
+      font-style: italic;
+      font-size: large;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div id="app">
+    <router-link to="/login" tag="span">登录</router-link>
+    <router-link to="/register">注册</router-link>
+    <!-- <a href="#/login">登录</a>
+    <a href="#/register">注册</a> -->
+    <transition enter-active-class="animated bounceIn" leave-active-class="animated bounceOut" :duration="400">
+      <router-view></router-view>
+    </transition>
+
+  </div>
+  <script>
+
+    var login = {
+      template: '<h1>登录界面组件</h1>'
+    }
+    var register = {
+      template: '<h1>注册界面组件</h1>'
+    }
+
+    var routerObj = new VueRouter({
+      //这个配置对象中的route，标识 路由匹配规则 的意思
+      //属性1：是path，表示监听 哪个路由链接地址
+      //属性2： 是component 表示 匹配路由规则地址path的对应component
+      routes: [
+        { path: '/', redirect: '/login' },
+        { path: '/login', component: login },
+        { path: '/register', component: register }
+      ]
+    })
+
+    var vm = new Vue({
+      el: '#app',
+      data: {
+
+      },
+      methods: {
+
+      },
+      components: {
+        login,
+        register
+      },
+      router: routerObj
+    })
+  </script>
+</body>
+
+</html>

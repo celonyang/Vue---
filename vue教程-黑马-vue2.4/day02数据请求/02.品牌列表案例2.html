@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>01.品牌列表案例</title>
+  <link rel="stylesheet" href="./lib/bootstrap-3.3.7.css">
+</head>
+
+<body>
+  <div id="app">
+
+
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title">添加品牌</h3>
+      </div>
+      <div class="panel-body form-inline">
+        <label>
+          id: <input type="text" class="form-control" v-model="id">
+        </label>
+        <label>
+          <!-- 键盘按键修饰符:.enter  .tab   .delete  .esc  .space  .up .down  .left  .right -->
+          <!-- name: <input type="text" class="form-control" v-model="name" @keyup.enter="Add"> -->
+          <!-- 可以使用键盘码 -->
+          name: <input type="text" class="form-control" v-model="name" @keyup.F2="Add">
+        </label>
+        <!-- 在vue中，使用事件绑定机制，为元素加小括号,就可以给事件传参，无参时可以不加小括号() -->
+        <input type="button" value="添加" class="btn btn-primary" @click="Add">
+        <label>
+          搜索名字的关键字：
+          <input type="text" class="form-control" v-model="keywords" v-focus v-color="'blue'">
+        </label>
+      </div>
+    </div>
+
+    <table class="table table-bordered table-hover table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Ctime</th>
+          <th>Operation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for='item in Search(keywords)' :key="item.id">
+          <td v-text="item.id"></td>
+          <td v-text="item.name"></td>
+          <td>{{ item.ctime| dateFormat('yyyy-mm-dd') }}</td>
+          <td><a href="" @click.prevent="Delete(item.id)">删除</a></td>
+        </tr>
+      </tbody>
+    </table>
+
+
+  </div>
+  <div id="app2">
+    <h2 v-fontweight="1000" v-fontsize="'22px'">{{ dt| dateFormat }}</h2>
+  </div>
+  <script src="./lib/vue.js"></script>
+  <script>
+    // 全局过滤器，对时间进行格式化
+    Vue.filter('dateFormat', function (dateStr, pattern = '') {
+      //根据给定的时间字符串，得到特定的日期
+      var dt = new Date(dateStr)
+      var year = dt.getFullYear()
+      var month = dt.getMonth() + 1
+      var day = dt.getDate()
+
+      if (pattern && pattern.toLowerCase() === 'yyyy-mm-dd') {
+        return `${year}-${month}-${day}`
+      }
+      else {
+        var hh = dt.getHours()
+        var mm = dt.getMilliseconds()
+        var ss = dt.getSeconds()
+        return `${year}-${month}-${day} ${hh}:${mm}:${ss}`
+      }
+    })
+
+    //自定义全卷按键修饰符
+    Vue.config.keyCodes.F2 = 112
+    //Vue.directive定义全局的指令
+    // 参数1是指令名称，在自定义的时候指令名称前面不需要加v-前缀
+    // 使用的时候必须在前面加上v-前缀
+    // 参数2是一个对象，这个对象身上有些与指令相关的函数，这些函数可以在特定的阶段执行相关的操作
+    Vue.directive('focus', {
+      bind: function (el) {//每当指令绑定到元素上的时候，会立即执行这个函数  值执行一次
+        //在元素刚绑定来指令的时候，还没有插入到DOM中去，这时候调用focus方法没有作用
+        // el.focus()
+      },
+      inserted: function (el) {//标识元素插入到DOM的时候会执行这个函数（触发1此）
+        el.focus()
+      },
+      updated: function () {//当VNode更新的时候，执行，可能会多次触发
+
+      },
+    })
+    //样式，只有通过指令绑定给来元素，不管这个元素有没有被插入到页面中去，就有了一个内联样式
+    // 和js行为有关的操作，最好放到inserted中去，防止行为不生效
+    // 和样式相关的操作，一般都可以在bind中执行，bind执行在inserted之前
+    Vue.directive('color', {
+      bind: function (el, binding) {
+        // el.style.color='red'
+        el.style.color = binding.value
+      }
+    })
+
+    var vm = new Vue({
+      el: "#app",
+      data: {
+        id: '',
+        name: '',
+        keywords: '',//搜索的关键字
+        list: [
+          { id: 1, name: '奔驰', ctime: new Date() },
+          { id: 2, name: '宝马', ctime: new Date() }
+        ]
+      },
+      methods: {
+        // 业务逻辑分析：
+        // 1、获取id，name，直接从data上面获取
+        // 2、组织一个对象
+        // 3、把这个对象，调用 数组的 相关方法，添加（push或unshift）到当前data 上的list中
+        // 4、注意 在vue中已经实现来数据的双向绑定，每当我们修改来data中的数据，vue会默认监听到数据的改动，
+        // 自动把最新的数据，应用到页面上
+        // 5、我们更多的是在进行 VM中的model 数据的操作，同事，在操作model数据的时候，指定业务逻辑的操作
+        Add() {
+          this.list.push({ id: this.id, name: this.name, ctime: new Date() })
+          this.id = this.name = ''
+        },
+        // 分析：
+        // 1、如何根据id找到删除这项的索引
+        // 2、直接调用数组的splice方法
+        Delete(id) {
+
+          // this.list.some((item,i) => {
+          //   if (item.id = id)
+          //     this.list.splice(i, 1)
+          //   return true;
+          // })
+
+          var index = this.list.findIndex(item => {
+            if (item.id == id)
+              return true
+          })
+          console.log(index)
+          this.list.splice(index, 1)
+
+        },
+        // 之前v-for中的数据都是从list中的数据直接渲染过来的
+        // 现在，自定义一个方法 Search 方法，同事，把 所有的关键字，通过传参的形式传递给Search方法
+        // 把符合条件的数据组成一个新数组，返回
+        Search(keywords) {
+          var newList = []
+          // this.list.forEach(item => {
+          //   if (item.name.indexOf(keywords) != -1) {
+          //     newList.push(item)
+          //   }
+          // })
+          // return newList
+
+          return this.list.filter(item => {
+            // ES6中提供的新方法，字符串内包含某些字符
+            if (item.name.includes(keywords)) {
+              return item
+            }
+          })
+
+        }
+      },
+    })
+    var vm2 = new Vue({
+      el: "#app2",
+      data: {
+        dt: new Date()
+      },
+      methods: {
+
+      },
+      filters: {//定义私有过滤器， 过滤器有两个条件 过滤器名称 和 处理函数
+        dateFormat: function (dateStr) {
+          var dt = new Date(dateStr)
+          var year = dt.getFullYear()
+          var month = dt.getMonth() + 1
+          var day = dt.getDate()
+          // return `${year}-${month}-${day}`
+          return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`
+          //ES6新特性，在字符串前补字符串
+        }
+      },
+      directives: {
+        'fontweight': {
+          bind: function (el, binding) {
+            el.style.fontWeight = binding.value
+          }
+        },
+        //没有指定bind或者inserted，等同于 把代码写到来bind和update中去，vue.js官方文档（函数简写）
+        'fontsize': function (el, binding) {
+          el.style.fontSize = parseInt(binding.value)+'px'
+        }
+      }
+    }) 
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>06.简易计算器案例</title>
+</head>
+
+<body>
+  <div id="app">
+    <input type="text" v-model="a">
+    <select v-model="opt">
+      <option value="+">+</option>
+      <option value="-">-</option>
+      <option value="*">*</option>
+      <option value="/">/</option>
+    </select>
+    <input type="text" v-model="b">
+    <input type="button" @click="caculation" value="=">
+    <input type="text" :value="c">
+  </div>
+  <script src="./lib/vue.js"></script>
+  <script>
+    var vm = new Vue({
+      el: "#app",
+      data: {
+        a: 0,
+        opt: "+",
+        b: 0,
+        c: 0
+      },
+      methods: {
+        caculation() {
+          // switch (this.opt) {
+          //   case "+":
+          //     this.c = parseInt(this.a) + parseInt(this.b)
+          //     break;
+          //   case "-":
+          //     this.c = parseInt(this.a) - parseInt(this.b)
+          //     break;
+          //   case "*":
+          //     this.c = parseInt(this.a) * parseInt(this.b)
+          //     break;
+          //   case "/":
+          //     this.c = parseInt(this.a) / parseInt(this.b)
+          //     break;
+          // }
+          var codeStr = 'parseInt(this.a)' + this.opt + 'parseInt(this.b)'
+          this.c = eval(codeStr)
+        }
+      },
+    })
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>14.v-show的使用</title>
+</head>
+
+<body>
+  <!-- v-for是每次都创建或删除dom元素 ，有较高的切换性能消耗-->
+  <!-- v-show都会创建元素，只是加来一个display:none的样式 ，有较高的初始性能消耗-->
+  <!-- 如果元素有频繁的切换，做好不要使用v-if -->
+  <div id="app">
+    <input type="button" value="切换" @click="toggle">
+    <h3 v-if="flag">这是使用v-for控制的元素</h3>
+    <h3 v-show="flag">这是使用v-show控制的元素</h3>
+  </div>
+  <script src="./lib/vue.js"></script>
+  <script>
+    var vm = new Vue({
+      el: "#app",
+      data: {
+        flag: true
+      },
+      methods: {
+        toggle(){
+          this.flag =!this.flag
+        }
+      },
+    })
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>04.生命周期函数演示</title>
+  <script src="./lib/vue.js"></script>
+</head>
+
+<body>
+  <div id="app">{{ msg }}</div>
+  <script>
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        msg: 'ok'
+      },
+      methods: {
+        show() {
+          console.log('执行来show方法')
+        }
+      },
+      beforeCreate() {
+        //在该生命周期函数时，data和methods都还没有创建，执行methods中的方法或者操作data中的数据会报错
+        // console.log(this.msg)
+        // this.show()
+      },
+      created() {//最早可执行methods中的方法或者操作data中的数据会报错
+        console.log(this.msg)
+        this.show()
+      },
+      beforeMount() {//表示模板已经编译，但是还没渲染到html中
+        console.log(document.getElementById('app').innerText)
+      },
+      mounted() {//渲染html后，实例创建的最后一个生命周期函数
+        console.log(document.getElementById('app').innerText)
+      },
+      beforeUpdate(){//改变来data，但是还没有渲染到html
+
+      },
+      updated() {//data和html都是更新后的
+        
+      },
+    })
+  </script>
+</body>
+
+</html>

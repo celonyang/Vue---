@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>11.v-for循环对象</title>
+</head>
+
+<body>
+  <div id="app">
+    <div v-for="item in list">
+      <p v-for="(item1,key,index) in item">{{ key }}:{{ item1 }}</p>
+    </div>
+  </div>
+  <script src="./lib/vue.js"></script>
+  <script>
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        list: [{
+          id: 1,
+          name: 'Celon1',
+          gender: 'male'
+        },
+        {
+          id: 3,
+          name: "celon2",
+          gender: "male"
+        }
+        ]
+      },
+      methods: {
+
+      },
+    })
+  </script>
+</body>
+
+</html>

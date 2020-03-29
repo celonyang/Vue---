@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>02.v-cloak的学习</title>
+  <style>
+    [v-cloak]{
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <p v-cloak>{{ text }}</p>
+    <!-- 默认v-text没有闪烁问题,会覆盖原来文本中的内容 -->
+    <!-- 插值表达式有闪烁问题，使用v-cloak解决闪烁问题，只会切换自己的占位符，不会把整个元素清空 -->
+    <!-- v-text,插值表达式都不会渲染文本的标签，v-html可以渲染 -->
+    <!-- v-text/v-html都会替换标签内的内容 -->
+    <!-- 绑定指令v-bind,简写: -->
+    <!-- vue中提供来v-on,时间绑定机制 -->
+    <h4 v-text="text"></h4>
+
+    {{ msg }}
+    <p v-text="msg"></p>
+
+    <p v-html="msg"></p>
+
+    <input type="button" value="按钮" :title="myTitle">
+    <input type="button" value="v-click学习" v-on:click="show()"> 
+    <input type="button" value="v-click学习" v-on:mouseover="show()"> 
+  </div>
+  <script src="./lib/vue.js"></script>
+  <script>
+    var vm=new Vue({
+      el:'#app',
+      data:{
+        text:'Hello,Vue!!!',
+        msg:"<h1>我是一个大大的标题。。。</h1>",
+        myTitle:"这是一个自定义标题"
+      },
+      methods: {
+        show(){
+          alert(this.text)
+        }
+      },
+    })
+  </script>
+</body>
+</html>
+
+<!-- 1、如何定义一个Vue基本代码结构
+2、插值表达式，解决闪烁问题v-cloak
+3、v-html,v-text
+4、v-bind 缩写:
+5、v-on, 缩写@ -->
+

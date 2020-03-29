@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>04.事件修饰符</title>
+  <style>
+    .inner {
+      height: 150px;
+      background-color: darkcyan;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div class="inner" @click="divHandler">
+      <!-- 使用stop阻止冒泡 -->
+      <input type="button" value="戳他" @click.stop="btnHandler">
+    </div>
+    <!-- 使用.prevent阻止默认行为 -->
+    <a href="https://www.baidu.com" @click.prevent="innerClick">有问题，先百度</a>
+    <!-- 使用.capture实现捕获触发事件机制 -->
+    <!-- 使用.self执行只有当前点击事件触发机制 -->
+    <!-- 使用.once只触发一次点击事件 -->
+    <!-- stop和self的区别：stop是阻止冒泡行为，self只负责阻止自己，不能阻止更外层的冒泡行为 -->
+  </div>
+  <script src="./lib/vue.js"></script>
+  <script>
+    var vm = new Vue({
+      el: '#app',
+      data: {
+
+      },
+      methods: {
+        divHandler() {
+          alert('这是触发来div的点击事件')
+        },
+        btnHandler(){
+          alert('这是触发来btn的点击事件')
+        }
+      },
+    })
+  </script>
+</body>
+
+</html>
